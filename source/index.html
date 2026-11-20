@@ -633,7 +633,8 @@ kbd{font:inherit;font-size:13.5px;background:var(--hover);border:1px solid var(-
       <svg viewBox="0 0 24 24"><rect x="2.5" y="6" width="19" height="12" rx="2.5"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/></svg>Keyboard</button>
     <button class="st-item" data-sec="usage" data-kw="messages tokens stats">
       <svg viewBox="0 0 24 24"><path d="M4 16a8 8 0 1116 0"/><path d="M12 16l4-5"/></svg>Usage</button>
-    <button class="st-item" data-sec="builder" data-kw="build export desktop exe windows macos dmg linux appimage android ios apk installer package app"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4M7 9h10M7 12h6"/></svg>Build &amp; Export</button>
+    <button class="st-item" data-sec="downloads" data-kw="download installer windows exe macos mac dmg linux appimage desktop app latest version">
+      <svg viewBox="0 0 24 24"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 19h16"/></svg>Downloads</button>
     <div class="mem-empty hidden" id="stNone">No matching settings</div>
   </aside>
 
@@ -668,33 +669,40 @@ kbd{font:inherit;font-size:13.5px;background:var(--hover);border:1px solid var(-
         </div>
       </div>
 
-      <!-- Build & Export -->
-      <div class="st-pane" data-sec="builder">
-        <h1>Build &amp; Export</h1>
-        <p class="hint">Turn Aither AI into an installable desktop app. Create a build project, then run its packaging command on a computer with the required tools installed.</p>
-        <h2>Desktop package</h2>
+      <!-- Downloads -->
+      <div class="st-pane" data-sec="downloads">
+        <h1>Downloads</h1>
+        <p class="hint">Get the latest Aither AI desktop app. Choose the installer for your computer.</p>
         <div class="card">
-          <div class="pkg-field"><label for="pkgName">App name</label><input id="pkgName" maxlength="40" value="Aither AI"></div>
-          <div class="pkg-field"><label for="pkgVersion">Version</label><input id="pkgVersion" maxlength="20" value="1.0.0" placeholder="1.0.0"></div>
-          <div class="pkg-field"><label for="pkgUrl">App website</label><input id="pkgUrl" type="url" value="https://aitherai.pages.dev" placeholder="https://example.com"></div>
-          <div class="pkg-field"><label>Choose the package you want to build</label></div>
-          <div class="pkg-grid">
-            <label class="pkg-option"><input type="radio" name="pkgPlatform" value="win" checked><span><b>Windows</b><small>Installer (.exe)</small></span></label>
-            <label class="pkg-option"><input type="radio" name="pkgPlatform" value="mac"><span><b>macOS</b><small>Disk image (.dmg)</small></span></label>
-            <label class="pkg-option"><input type="radio" name="pkgPlatform" value="linux"><span><b>Linux</b><small>AppImage</small></span></label>
+          <div class="row">
+            <div class="tx"><div class="t">Aither AI 4.3.1</div><div class="d">Latest desktop release</div></div>
+            <span class="badge">Latest</span>
           </div>
-          <button class="pkg-primary" id="pkgDownload" type="button">↓ Download desktop build project</button>
-          <div class="pkg-status" id="pkgStatus" role="status" aria-live="polite"></div>
+          <div class="row">
+            <div class="tx"><div class="t">Windows</div><div class="d">Windows 10/11 · 64-bit · EXE installer</div></div>
+            <a class="btn-s download-link" href="https://github.com/AitherNexus/AitherAI-Builds/releases/download/v4.3.1/Aither.AI.Setup.4.3.1.exe">Download</a>
+          </div>
+          <div class="row">
+            <div class="tx"><div class="t">macOS (Apple silicon)</div><div class="d">Apple M-series · ARM64 · DMG</div></div>
+            <a class="btn-s download-link" href="https://github.com/AitherNexus/AitherAI-Builds/releases/download/v4.3.1/Aither.AI-4.3.1-arm64.dmg">Download</a>
+          </div>
+          <div class="row">
+            <div class="tx"><div class="t">macOS (Intel)</div><div class="d">Intel Mac · x64 · DMG</div></div>
+            <a class="btn-s download-link" href="https://github.com/AitherNexus/AitherAI-Builds/releases/download/v4.3.1/Aither.AI-4.3.1.dmg">Download</a>
+          </div>
+          <div class="row">
+            <div class="tx"><div class="t">Linux</div><div class="d">64-bit · AppImage</div></div>
+            <a class="btn-s download-link" href="https://github.com/AitherNexus/AitherAI-Builds/releases/download/v4.3.1/Aither.AI-4.3.1.AppImage">Download</a>
+          </div>
         </div>
-        <h2>Build it on your computer</h2>
-        <div class="card"><ol class="pkg-steps"><li>Install Node.js (LTS) on your computer.</li><li>Unzip the downloaded project and open a terminal in that folder.</li><li>Run <code>npm install</code>.</li><li>Run the platform command in the included README. Your installer appears in <code>dist</code>.</li></ol></div>
-        <h2>Other app formats</h2>
+        <h2>Use Aither AI in your browser</h2>
         <div class="card">
-          <div class="row"><div class="tx"><div class="t">Web app / PWA</div><div class="d">Use your browser's Install app or Add to Home Screen option on the Aither AI website.</div></div><span class="badge">Available</span></div>
-          <div class="row"><div class="tx"><div class="t">Android APK</div><div class="d">Can be packaged with Capacitor and Android Studio. This desktop project does not create APK files.</div></div><span class="badge">Separate tools</span></div>
-          <div class="row"><div class="tx"><div class="t">iPhone / iPad app</div><div class="d">Requires a Mac with Xcode and an iOS signing setup. A browser download cannot create an installable iOS app by itself.</div></div><span class="badge">Separate tools</span></div>
+          <div class="row">
+            <div class="tx"><div class="t">Web app</div><div class="d">No installer needed. You can also install it from your browser as an app.</div></div>
+            <a class="btn-s download-link" href="https://aitherai.pages.dev/">Open</a>
+          </div>
         </div>
-        <p class="pkg-note">This creates a ready-to-build Electron project, not a precompiled installer. Build Windows installers on Windows, macOS packages on macOS, and Linux packages on Linux. Code signing may require certificates. The desktop shell loads your hosted Aither AI website, so it needs internet access.</p>
+        <p class="hint">Desktop installers currently require an internet connection to use Aither AI. Windows and macOS may show a security warning because the installers are not code-signed.</p>
       </div>
 
       <!-- Appearance -->
@@ -2992,28 +3000,6 @@ $("aiTestProvider").onclick=async()=>{
     toast("AI provider connection successful!");
   }catch(e){$("aiProviderStatus").textContent=e.message;toast(e.message);}
 };
-// ---------- desktop packaging project export ----------
-function pkgSafeName(value){ return String(value||"Aither AI").trim().replace(/[^a-z0-9 _.-]/gi,"").replace(/\s+/g," ").slice(0,40)||"Aither AI"; }
-function pkgVersionValid(value){ return /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/.test(String(value||"")); }
-async function downloadDesktopBuildProject(){
-  const button=$("pkgDownload"), status=$("pkgStatus"), name=pkgSafeName($("pkgName").value), version=$("pkgVersion").value.trim();
-  let appUrl=$("pkgUrl").value.trim(); const platform=document.querySelector('input[name="pkgPlatform"]:checked')?.value||"win";
-  if(!pkgVersionValid(version)){status.textContent="Enter a version like 1.0.0."; $("pkgVersion").focus(); return;}
-  try{const u=new URL(appUrl); if(u.protocol!=="https:") throw new Error(); appUrl=u.toString();}catch(e){status.textContent="Enter a valid HTTPS app website."; $("pkgUrl").focus(); return;}
-  button.disabled=true; status.textContent="Preparing your desktop build project…";
-  try{
-    if(!window.JSZip) await new Promise((resolve,reject)=>{const s=document.createElement("script");s.src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js";s.onload=resolve;s.onerror=()=>reject(new Error("Could not load the ZIP library. Check your internet connection and try again."));document.head.appendChild(s);});
-    const slug=name.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")||"aither-ai";
-    const mainSource = "const { app, BrowserWindow, shell } = require(\"electron\");\nconst APP_URL = "+JSON.stringify(appUrl)+";\nfunction createWindow(){\n const win=new BrowserWindow({width:1280,height:850,minWidth:720,minHeight:560,title:"+JSON.stringify(name)+",autoHideMenuBar:true,backgroundColor:\"#17131f\",webPreferences:{contextIsolation:true,nodeIntegration:false,sandbox:true}});\n win.webContents.setWindowOpenHandler(({url})=>{if(url.startsWith(\"https://\")||url.startsWith(\"http://\"))shell.openExternal(url);return {action:\"deny\"};});\n win.webContents.on(\"will-navigate\",(event,url)=>{if(!url.startsWith(APP_URL)){event.preventDefault();if(url.startsWith(\"https://\")||url.startsWith(\"http://\"))shell.openExternal(url);}});\n win.loadURL(APP_URL);\n}\napp.whenReady().then(()=>{createWindow();app.on(\"activate\",()=>{if(BrowserWindow.getAllWindows().length===0)createWindow();});});\napp.on(\"window-all-closed\",()=>{if(process.platform!==\"darwin\")app.quit();});\n";
-    const manifest={name:slug,version,description:name+" desktop application",main:"main.cjs",author:"AitherNexus",license:"UNLICENSED",scripts:{start:"electron .","dist:win":"electron-builder --win nsis","dist:mac":"electron-builder --mac dmg","dist:linux":"electron-builder --linux AppImage"},devDependencies:{electron:"^35.0.0","electron-builder":"^26.0.12"},build:{appId:"com.aithernexus."+slug.replace(/-/g,""),productName:name,asar:true,files:["main.cjs","package.json"],directories:{output:"dist"},win:{target:["nsis"]},nsis:{oneClick:false,allowToChangeInstallationDirectory:true},mac:{target:["dmg"]},linux:{target:["AppImage"],category:"Utility"}}};
-    const readme="# "+name+" Desktop Build\n\nThis project packages the hosted Aither AI website as a desktop application using Electron. It does not use GitLab CI or workflows.\n\n## Requirements\n- Node.js LTS\n- Build on Windows for the EXE, macOS for the DMG, or Linux for the AppImage\n- Internet access to load "+appUrl+"\n\n## Build\n1. Open a terminal in this folder.\n2. Run `npm install`.\n3. Run ONE command:\n   - Windows installer: `npm run dist:win`\n   - macOS disk image: `npm run dist:mac`\n   - Linux AppImage: `npm run dist:linux`\n4. Find the installer in `dist`.\n\n## Notes\nThe desktop app is a wrapper around the hosted site and requires internet. Signing may be required to remove operating-system security warnings. This project does not create Android or iOS apps; those require Capacitor and Android Studio or Xcode.\n";
-    const zip=new window.JSZip(); zip.file("package.json",JSON.stringify(manifest,null,2)); zip.file("main.cjs",mainSource); zip.file("README.md",readme); zip.file(".gitignore","node_modules/\ndist/\n.DS_Store\n*.log\n");
-    zip.file("APP-INFO.txt","App: "+name+"\nVersion: "+version+"\nWebsite: "+appUrl+"\nSelected package: "+platform+"\n");
-    const blob=await zip.generateAsync({type:"blob"}), a=document.createElement("a"), url=URL.createObjectURL(blob); a.href=url; a.download=slug+"-desktop-build.zip"; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url),1500);
-    const command=platform==="win"?"npm run dist:win":platform==="mac"?"npm run dist:mac":"npm run dist:linux"; status.textContent="Project downloaded! Unzip it, run npm install, then run "+command+"."; 
-  }catch(e){status.textContent=e.message||"Could not create the project ZIP.";} finally{button.disabled=false;}
-}
-$("pkgDownload").onclick=downloadDesktopBuildProject;
 applyPrefsToUI();
 </script>
 </body>
