@@ -1,6 +1,6 @@
 {
   "name": "aither-ai-desktop",
-  "version": "4.3.0",
+  "version": "4.3.1",
   "description": "Aither AI desktop app",
   "main": "main.js",
   "scripts": {
@@ -18,13 +18,17 @@
     "files": [
       "main.js",
       "preload.js",
-      "app/**/*"
+      "app/index.html",
+      "app/app.js",
+      "app/style.css"
     ],
     "win": {
       "target": [
         {
           "target": "nsis",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         }
       ]
     },
@@ -32,7 +36,10 @@
       "target": [
         {
           "target": "dmg",
-          "arch": ["arm64", "x64"]
+          "arch": [
+            "arm64",
+            "x64"
+          ]
         }
       ]
     },
@@ -40,7 +47,9 @@
       "target": [
         {
           "target": "AppImage",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         }
       ]
     }
