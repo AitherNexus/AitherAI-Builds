@@ -1,23 +1,53 @@
-name: Build Aither AI desktop apps
+name: Build and publish Aither AI desktop releases
 
 on:
   push:
     branches: [main]
     paths:
+      - "source/**"
+      - "desktop/**"
       - ".github/workflows/build-desktop.yml"
   workflow_dispatch:
-  repository_dispatch:
-    types: [build-desktop]
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
-  group: aither-ai-desktop-build-${{ github.ref }}
+  group: aither-ai-release-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      tag: ${{ steps.version.outputs.tag }}
+      already_released: ${{ steps.check.outputs.already_released }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: version
+        name: Read app version
+        shell: bash
+        run: |
+          VERSION="$(node -p "require('./desktop/package.json').version")"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=v$VERSION" >> "$GITHUB_OUTPUT"
+      - id: check
+        name: Check whether this version is already published
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "already_released=true" >> "$GITHUB_OUTPUT"
+            echo "Release $TAG already exists. Skipping rebuild."
+          else
+            echo "already_released=false" >> "$GITHUB_OUTPUT"
+          fi
+
   build:
+    needs: prepare
+    if: needs.prepare.outputs.already_released != 'true'
     name: Build ${{ matrix.platform }}
     strategy:
       fail-fast: false
@@ -37,45 +67,52 @@ jobs:
             artifact: dist/*.AppImage
     runs-on: ${{ matrix.os }}
     steps:
-      - name: Check out build repository
-        uses: actions/checkout@v4
-
-      - name: Check out latest Aither AI source from GitLab
-        uses: actions/checkout@v4
-        with:
-          repository: aithernexus/AitherAI
-          ref: main
-          path: source
-          fetch-depth: 1
-
-      - name: Generate desktop app files from the GitLab website
+      - uses: actions/checkout@v4
+      - name: Stage the published GitLab app snapshot
         shell: bash
         run: |
-          test -f source/index.html
-          test -f source/app.js
-          test -f source/style.css
-          mkdir -p source/desktop/app
-          cp source/index.html source/app.js source/style.css source/desktop/app/
-          echo "Staged these GitLab files:"
-          ls -lah source/desktop/app
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+          test -s source/index.html
+          test -s source/app.js
+          test -s source/style.css
+          mkdir -p desktop/app
+          cp source/index.html source/app.js source/style.css desktop/app/
+          echo "Staged Aither AI version ${{ needs.prepare.outputs.version }}"
+          ls -lah desktop/app
+      - uses: actions/setup-node@v4
         with:
           node-version: 22
-
-      - name: Install desktop build dependencies
-        working-directory: source/desktop
+      - name: Install desktop dependencies
+        working-directory: desktop
         run: npm install
-
       - name: Build installer
-        working-directory: source/desktop
+        working-directory: desktop
         run: ${{ matrix.command }}
-
-      - name: Upload installer
+      - name: Upload installer for release publishing
         uses: actions/upload-artifact@v4
         with:
           name: aither-ai-${{ matrix.platform }}
-          path: source/desktop/${{ matrix.artifact }}
+          path: desktop/${{ matrix.artifact }}
           if-no-files-found: error
-          retention-days: 14
+          retention-days: 7
+
+  publish:
+    needs: [prepare, build]
+    if: needs.prepare.outputs.already_released != 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download all platform installers
+        uses: actions/download-artifact@v4
+        with:
+          pattern: aither-ai-*
+          path: release-files
+          merge-multiple: true
+      - name: Publish permanent versioned GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ needs.prepare.outputs.tag }}
+          name: Aither AI ${{ needs.prepare.outputs.version }}
+          target_commitish: main
+          generate_release_notes: true
+          files: release-files/*
+          fail_on_unmatched_files: true
+          make_latest: true
