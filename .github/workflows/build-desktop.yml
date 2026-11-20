@@ -48,12 +48,21 @@ jobs:
           path: source
           fetch-depth: 1
 
+      - name: Generate desktop app files from the GitLab website
+        shell: bash
+        run: |
+          test -f source/index.html
+          test -f source/app.js
+          test -f source/style.css
+          mkdir -p source/desktop/app
+          cp source/index.html source/app.js source/style.css source/desktop/app/
+          echo "Staged these GitLab files:"
+          ls -lah source/desktop/app
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
-          cache-dependency-path: source/desktop/package.json
 
       - name: Install desktop build dependencies
         working-directory: source/desktop
