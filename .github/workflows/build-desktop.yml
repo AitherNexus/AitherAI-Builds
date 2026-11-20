@@ -56,7 +56,7 @@ jobs:
           - platform: windows
             os: windows-latest
             command: npm run build -- --win nsis-web --publish never
-            artifact: dist/*
+            artifact: dist/nsis-web/*
           - platform: macos
             os: macos-latest
             command: npm run build -- --mac --publish never
