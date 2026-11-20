@@ -55,15 +55,15 @@ jobs:
         include:
           - platform: windows
             os: windows-latest
-            command: npm run build -- --win
-            artifact: dist/*.exe
+            command: npm run build -- --win nsis-web --publish never
+            artifact: dist/*
           - platform: macos
             os: macos-latest
-            command: npm run build -- --mac
+            command: npm run build -- --mac --publish never
             artifact: dist/*.dmg
           - platform: linux
             os: ubuntu-latest
-            command: npm run build -- --linux
+            command: npm run build -- --linux --publish never
             artifact: dist/*.AppImage
     runs-on: ${{ matrix.os }}
     steps:
@@ -84,6 +84,12 @@ jobs:
       - name: Install desktop dependencies
         working-directory: desktop
         run: npm install
+      - name: Configure small Windows web installer
+        if: matrix.platform == 'windows'
+        working-directory: desktop
+        shell: bash
+        run: |
+          node -e "const fs=require('fs'); const p=require('./package.json'); p.build.nsisWeb={}; fs.writeFileSync('package.json', JSON.stringify(p,null,2)+'\\n');"
       - name: Build installer
         working-directory: desktop
         run: ${{ matrix.command }}

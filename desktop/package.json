@@ -1,6 +1,6 @@
 {
   "name": "aither-ai-desktop",
-  "version": "4.3.2",
+  "version": "4.3.3",
   "description": "Aither AI desktop app",
   "main": "main.js",
   "scripts": {
@@ -25,12 +25,13 @@
     "win": {
       "target": [
         {
-          "target": "nsis",
+          "target": "nsis-web",
           "arch": [
             "x64"
           ]
         }
-      ]
+      ],
+      "compression": "maximum"
     },
     "mac": {
       "target": [
@@ -53,9 +54,12 @@
         }
       ]
     },
-    "nsis": {
-      "compression": "maximum"
-    },
-    "compression": "maximum"
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "AitherNexus",
+        "repo": "AitherAI-Builds"
+      }
+    ]
   }
 }
