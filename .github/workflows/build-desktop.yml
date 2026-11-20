@@ -1,0 +1,72 @@
+name: Build Aither AI desktop apps
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/build-desktop.yml"
+  workflow_dispatch:
+  repository_dispatch:
+    types: [build-desktop]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: aither-ai-desktop-build-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build ${{ matrix.platform }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: windows
+            os: windows-latest
+            command: npm run build -- --win
+            artifact: dist/*.exe
+          - platform: macos
+            os: macos-latest
+            command: npm run build -- --mac
+            artifact: dist/*.dmg
+          - platform: linux
+            os: ubuntu-latest
+            command: npm run build -- --linux
+            artifact: dist/*.AppImage
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Check out build repository
+        uses: actions/checkout@v4
+
+      - name: Check out latest Aither AI source from GitLab
+        uses: actions/checkout@v4
+        with:
+          repository: aithernexus/AitherAI
+          ref: main
+          path: source
+          fetch-depth: 1
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: source/desktop/package.json
+
+      - name: Install desktop build dependencies
+        working-directory: source/desktop
+        run: npm install
+
+      - name: Build installer
+        working-directory: source/desktop
+        run: ${{ matrix.command }}
+
+      - name: Upload installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: aither-ai-${{ matrix.platform }}
+          path: source/desktop/${{ matrix.artifact }}
+          if-no-files-found: error
+          retention-days: 14
