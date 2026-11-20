@@ -74,8 +74,10 @@ jobs:
           test -s source/index.html
           test -s source/app.js
           test -s source/style.css
+          test -s source/config.js
+          test -s source/api.js
           mkdir -p desktop/app
-          cp source/index.html source/app.js source/style.css desktop/app/
+          cp source/index.html source/app.js source/style.css source/config.js source/api.js desktop/app/
           echo "Staged Aither AI version ${{ needs.prepare.outputs.version }}"
           ls -lah desktop/app
       - uses: actions/setup-node@v4

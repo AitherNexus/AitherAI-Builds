@@ -1,6 +1,6 @@
 {
   "name": "aither-ai-desktop",
-  "version": "4.3.3",
+  "version": "4.3.4",
   "description": "Aither AI desktop app",
   "main": "main.js",
   "scripts": {
@@ -20,7 +20,9 @@
       "preload.js",
       "app/index.html",
       "app/app.js",
-      "app/style.css"
+      "app/style.css",
+      "app/config.js",
+      "app/api.js"
     ],
     "win": {
       "target": [
