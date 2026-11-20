@@ -98,7 +98,7 @@ const AI_PROVIDER_OPTIONS = [
   ["llama3", "Meta Llama 3"]
 ];
 const AI_PROVIDER_DEFAULTS = { provider: "gemini", model: "" };
-let aiProviderSettings = readAIProviderSettings();
+let aiProviderSettings = Object.assign({}, AI_PROVIDER_DEFAULTS);
 let AI_PROVIDER_MODELS = null;
 let AI_MODELS_LOADING = false;
 function readAIProviderSettings() {
@@ -1360,6 +1360,9 @@ const safeStorage = {
   setItem:(k,v)=>{ try{ localStorage.setItem(k,v); }catch(e){ memStore[k]=v; } },
   removeItem:k=>{ try{ localStorage.removeItem(k); }catch(e){ delete memStore[k]; } }
 };
+
+// Load saved provider preferences only after safeStorage has been initialized.
+aiProviderSettings = readAIProviderSettings();
 
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
   auth:{ storage:safeStorage, persistSession:true, autoRefreshToken:true, detectSessionInUrl:false }
